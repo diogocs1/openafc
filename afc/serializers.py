@@ -70,9 +70,9 @@ class SupervisorSerializer(UserModelSerializer):
 		}
 
 
-class VehicleSerializer(serializers.HyperlinkedModelSerializer):
+class ValidatorSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
-		model = Vehicle
+		model = Validator
 		fields = '__all__'
 
 

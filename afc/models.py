@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
+# TODO: Adicionar o endereço
 
 class Passenger(models.Model):
 	cpf 		= models.CharField(max_length=11, unique=True)
@@ -26,7 +27,7 @@ class Supervisor(models.Model):
 	user_id 	= models.OneToOneField(User, on_delete=models.CASCADE)
 
 
-class Vehicle(models.Model):
+class Validator(models.Model):
 	hardware_online = models.BooleanField(blank=True, default=False)
 	vehicle_status 	= models.CharField(max_length=10, default='out',
 			choices=[('transit', 'In transit'), ('stop', 'Stopped'), ('out', 'Out of service')]
@@ -46,6 +47,6 @@ class Ticket(models.Model):
 
 
 class Receipt(models.Model):
-	date_time 	= models.DateTimeField(auto_now_add=True)
-	ticket_id 	= models.ForeignKey('Ticket')
-	vehicle_id 	= models.ForeignKey('Vehicle')
+	date_time 		= models.DateTimeField(auto_now_add=True)
+	ticket_id 		= models.ForeignKey('Ticket')
+	validator_id 	= models.ForeignKey('Validator')

@@ -16,7 +16,6 @@ class Migration(migrations.Migration):
             name='Company',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('username', models.CharField(unique=True, max_length=40)),
                 ('name', models.CharField(max_length=40)),
                 ('employee', models.CharField(max_length=40)),
                 ('cnpj', models.CharField(unique=True, max_length=20)),

@@ -2,9 +2,11 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
 
 from afc.models import *
 from afc.serializers import *
+from afc.permissions import *
 
 
 class PassengerViewSet(viewsets.ModelViewSet):
@@ -13,6 +15,7 @@ class PassengerViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Passenger.objects.all()
 	serializer_class = PassengerSerializer
+	permission_classes = [IsAdminUser or IsSupervisor or IsOwnerOrSelf]
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -21,6 +24,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Company.objects.all()
 	serializer_class = CompanySerializer
+	permission_classes = [IsAdminUser or IsSupervisor or IsOwnerOrSelf]
 
 
 class SupervisorViewSet(viewsets.ModelViewSet):
@@ -29,25 +33,28 @@ class SupervisorViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Supervisor.objects.all()
 	serializer_class = SupervisorSerializer
+	permission_classes = [IsAdminUser or IsOwnerOrSelf]
 
 
-class VehicleViewSet(viewsets.ModelViewSet):
+class ValidatorViewSet(viewsets.ModelViewSet):
 	"""
 	Adiciona, edita e visualiza veículos e o equipamento embarcado
 	"""
-	queryset = Vehicle.objects.all()
-	serializer_class = VehicleSerializer
+	queryset = Validator.objects.all()
+	serializer_class = ValidatorSerializer
+	permission_classes = [IsAdminUser or IsSupervisor or IsCompany and CompanyIsOwner]
 
 
-class TicketViewSet(viewsets.ModelViewSet):
+class TicketViewSet(viewsets.ReadOnlyModelViewSet):
 	"""
 	Adiciona, edita e visualiza tickets de passagem
 	"""
 	queryset = Ticket.objects.all()
 	serializer_class = TicketSerializer
+	permission_classes = [IsAdminUser or IsSupervisor]
 
 
-class ReceiptViewSet(viewsets.ModelViewSet):
+class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):
 	"""
 	Cria e apaga recibos de pagamento de passagem
 	"""

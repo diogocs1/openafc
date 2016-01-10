@@ -14,7 +14,7 @@ router.register(r'groups', login_views.GroupViewSet)
 router.register(r'passengers', afc_views.PassengerViewSet)
 router.register(r'company', afc_views.CompanyViewSet)
 router.register(r'supervisors', afc_views.SupervisorViewSet)
-router.register(r'vehicles', afc_views.VehicleViewSet)
+router.register(r'validators', afc_views.ValidatorViewSet)
 router.register(r'tickets', afc_views.TicketViewSet)
 router.register(r'receipt', afc_views.ReceiptViewSet)
 
