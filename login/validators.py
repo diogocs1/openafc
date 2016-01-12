@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 from django.core.exceptions import 	ValidationError
-from WiseAFC import settings
+from OpenAFC import settings
 
 import re
 

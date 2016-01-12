@@ -15,7 +15,7 @@ class PassengerViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Passenger.objects.all()
 	serializer_class = PassengerSerializer
-	permission_classes = [IsAdminUser or IsSupervisor or IsOwnerOrSelf]
+	permission_classes = [IsAdminSupervisorOrSelf]
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -24,7 +24,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Company.objects.all()
 	serializer_class = CompanySerializer
-	permission_classes = [IsAdminUser or IsSupervisor or IsOwnerOrSelf]
+	permission_classes = [IsAdminSupervisorOrSelf]
 
 
 class SupervisorViewSet(viewsets.ModelViewSet):
@@ -33,7 +33,7 @@ class SupervisorViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Supervisor.objects.all()
 	serializer_class = SupervisorSerializer
-	permission_classes = [IsAdminUser or IsOwnerOrSelf]
+	permission_classes = [IsAdminOrSelf]
 
 
 class ValidatorViewSet(viewsets.ModelViewSet):
@@ -42,16 +42,20 @@ class ValidatorViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Validator.objects.all()
 	serializer_class = ValidatorSerializer
-	permission_classes = [IsAdminUser or IsSupervisor or IsCompany and CompanyIsOwner]
+	permission_classes = [IsAdminSupervisorCompanyOwner]
+
+	def perform_create(self, serializer):
+		if hasattr(self.request.user, 'company'):
+			serializer.save(company_id=self.request.user.company)
 
 
-class TicketViewSet(viewsets.ReadOnlyModelViewSet):
+class TicketViewSet(viewsets.ModelViewSet):
 	"""
 	Adiciona, edita e visualiza tickets de passagem
 	"""
 	queryset = Ticket.objects.all()
 	serializer_class = TicketSerializer
-	permission_classes = [IsAdminUser or IsSupervisor]
+	permission_classes = [IsAdminOrSupervisor]
 
 
 class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):

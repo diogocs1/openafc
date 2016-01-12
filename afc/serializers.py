@@ -6,41 +6,44 @@ from afc.models import *
 from login.serializers import *
 
 
+class AddressSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Address
+		fields = '__all__'
+
+
 class UserModelSerializer(serializers.HyperlinkedModelSerializer):
+	address_id = AddressSerializer()
+
 	class Meta:
 		abstract = True
 
 	def create(self, validated_data):
-		# Se o usuário não for passado, crie um novo
+		# If not user, create
 		if not validated_data.has_key('user_id'):
-			if validated_data.has_key('cpf'):
-				username = validated_data['cpf']
-			elif validated_data.has_key('cnpj'):
-				username = validated_data['cnpj']
-			else:
-				username = validated_data['username']
+			username = validated_data.get('cpf') or validated_data.get('cnpj') or validated_data.get('username')
 			user_serializer = UserSerializer(data={'username': username})
 			user_serializer.is_valid(raise_exception=True)
 			validated_data['user_id'] = user_serializer.save()
 		else:
-			validated_data['user_id'].username = validated_data['cpf']
-		# Verifica se o usuário é válido
+			validated_data['user_id'].username = validated_data.get('cpf') or validated_data.get('cnpj') or validated_data.get('username')
+
+		# Deserializing address_id
+		address_data = validated_data.pop('address_id')
+		addr = Address.objects.create(**address_data)
+		validated_data['address_id'] = addr
+		# Continue to Default create
 		return super(UserModelSerializer, self).create(validated_data)
 
 	def update(self, instance, validated_data):
-		if validated_data.has_key('cpf'):
-			instance.user_id.username = validated_data['cpf']
-		elif validated_data.has_key('cnpj'):
-			instance.user_id.username = validated_data['cnpj']
-		elif validated_data.has_key('username'):
-			instance.user_id.username = validated_data['username']
+		if validated_data.has_key('cpf') or validated_data.has_key('cnpj') or validated_data.has_key('username'):
+			instance.user_id.username = validated_data.get('cpf') or validated_data.get('cnpj') or validated_data.get('username')
 		return super(UserModelSerializer, self).update(instance, validated_data)
 
 
 class PassengerSerializer(UserModelSerializer):
 	class Meta:
 		model = Passenger
-		fields = ['cpf', 'full_name', 'cell_phone', 'birth_date', 'user_id', 'url']
 		extra_kwargs = {
 			'user_id':{
 				'required': False
@@ -74,6 +77,12 @@ class ValidatorSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Validator
 		fields = '__all__'
+		extra_kwargs = {
+			'company_id': {
+				'required': False
+			}
+		}
+
 
 
 class TicketSerializer(serializers.HyperlinkedModelSerializer):

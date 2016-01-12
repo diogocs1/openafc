@@ -2,6 +2,7 @@ django==1.8
 djangorestframework
 djangorestframework-xml
 djangorestframework-csv
+django-rest-swagger
 django-filter
 django-crispy-forms
 django-guardian
