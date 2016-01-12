@@ -49,6 +49,7 @@ class Attendant(models.Model):
 	cpf 				= models.CharField(max_length=11, unique=True)
 	full_name 			= models.CharField(max_length=40)
 	cell_phone 			= models.CharField(max_length=20)
+	is_manager			= models.BooleanField(default=False)
 	user_id 			= models.OneToOneField(User, on_delete=models.CASCADE)
 	point_of_care_id	= models.ForeignKey('Point_of_care')
 

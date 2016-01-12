@@ -17,6 +17,8 @@ router.register(r'supervisors', afc_views.SupervisorViewSet)
 router.register(r'validators', afc_views.ValidatorViewSet)
 router.register(r'tickets', afc_views.TicketViewSet)
 router.register(r'receipt', afc_views.ReceiptViewSet)
+router.register(r'point_of_care', afc_views.PointOfCareViewSet)
+router.register(r'attendant', afc_views.AttendantViewSet)
 
 urlpatterns = [
     # Examples:

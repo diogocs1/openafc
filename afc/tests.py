@@ -239,3 +239,24 @@ class CompanyTests(APITestCase):
 		response = self.client.post(url, validator)
 		
 		self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+	def test_company_create_passenger(self):
+		"""
+		Ensure company can create Passengers
+		"""
+		url = reverse('passenger-list')
+		passenger = {
+			"cpf": "232332",
+			"full_name": "Another Passenger",
+			"cell_phone": "82996374800",
+			'birth_date': '1993-06-14',
+			"address_id": {
+				"street_line_1": "Rua 15",
+				'complement_line_2': '',
+				'city': "Arapiraca",
+				"state": "Alagoas",
+				"country": "Brasil"
+			}
+		}
+		response = self.client.post(url, passenger)
+		self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

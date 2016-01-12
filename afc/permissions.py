@@ -6,13 +6,17 @@ from rest_framework import permissions
 class IsAdminSupervisorCompanyOwner(permissions.BasePermission):
 	def has_permission(self, request, view):
 		# is Admin, Supervisor or Company?
-		if hasattr(request, 'user'):
-			return request.user.is_staff or hasattr(request.user, 'supervisor') or hasattr(request.user, 'company')
+		return request.user.is_staff or hasattr(request.user, 'supervisor') or hasattr(request.user, 'company')
 
 	def has_object_permission(self, request, view, obj):
 		# Company is owner?
 		if hasattr(obj, 'company_id') and hasattr(request.user, 'company'):
 			return obj.company_id == request.user.company or request.user.is_staff or hasattr(request.user, 'supervisor')
+
+
+class IsAdminSupervisorAttendant(permissions.BasePermission):
+	def has_permission(self, request, view):
+		return request.user.is_staff or hasattr(request.user, 'supervisor') or hasattr(request.user, 'attendant')
 
 
 class IsAdminSupervisorOrSelf(permissions.BasePermission):
@@ -35,6 +39,11 @@ class IsAdminOrSelf(permissions.BasePermission):
 		# is Self?, admin or supervisor?
 		if hasattr(obj, 'user_id'):
 			return obj.user_id == request.user or self.has_permission(request, view)
+
+
+class IsAdminSupervisorManager(permissions.BasePermission):
+	def has_permission(self, request, view):
+		return request.user.is_staff or hasattr(request.user, 'supervisor') or (hasattr(request.user, 'attendant') and request.user.attendant.is_manager)
 
 
 class IsAdminOrSupervisor(permissions.BasePermission):

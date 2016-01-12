@@ -55,7 +55,7 @@ class TicketViewSet(viewsets.ModelViewSet):
 	"""
 	queryset = Ticket.objects.all()
 	serializer_class = TicketSerializer
-	permission_classes = [IsAdminOrSupervisor]
+	permission_classes = [IsAdminSupervisorAttendant]
 
 
 class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):
@@ -64,3 +64,22 @@ class ReceiptViewSet(viewsets.ReadOnlyModelViewSet):
 	"""
 	queryset = Receipt.objects.all()
 	serializer_class = ReceiptSerializer
+	permission_classes = [PassengerIsOwner]
+
+
+class PointOfCareViewSet(viewsets.ModelViewSet):
+	"""
+	Cria, edita e apaga Pontos de atendimento
+	"""
+	queryset = Point_of_care.objects.all()
+	serializer_class = PointOfCareSerializer
+	permission_classes = [IsAdminOrSupervisor]
+
+
+class AttendantViewSet(viewsets.ModelViewSet):
+	"""
+	Cria, edita e apaga atententes de POC (Point of Care)
+	"""
+	queryset = Attendant.objects.all()
+	serializer_class = AttendantSerializer
+	permissions = [IsAdminSupervisorManager]

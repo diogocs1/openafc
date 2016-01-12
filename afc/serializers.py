@@ -9,7 +9,6 @@ from login.serializers import *
 class AddressSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Address
-		fields = '__all__'
 
 
 class UserModelSerializer(serializers.HyperlinkedModelSerializer):
@@ -54,7 +53,6 @@ class PassengerSerializer(UserModelSerializer):
 class CompanySerializer(UserModelSerializer):
 	class Meta:
 		model = Company
-		fields = '__all__'
 		extra_kwargs = {
 			'user_id':{
 				'required': False
@@ -65,7 +63,6 @@ class CompanySerializer(UserModelSerializer):
 class SupervisorSerializer(UserModelSerializer):
 	class Meta:
 		model = Supervisor
-		fields = '__all__'
 		extra_kwargs = {
 			'user_id':{
 				'required': False
@@ -76,7 +73,6 @@ class SupervisorSerializer(UserModelSerializer):
 class ValidatorSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Validator
-		fields = '__all__'
 		extra_kwargs = {
 			'company_id': {
 				'required': False
@@ -84,14 +80,26 @@ class ValidatorSerializer(serializers.HyperlinkedModelSerializer):
 		}
 
 
-
 class TicketSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Ticket
-		fields = '__all__'
 
 
 class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Receipt
-		fields = '__all__'
+
+
+class PointOfCareSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Point_of_care
+
+
+class AttendantSerializer(UserSerializer):
+	class Meta:
+		model = Attendant
+		extra_kwargs = {
+			'user_id':{
+				'required': False
+			}
+		}
