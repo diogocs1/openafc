@@ -6,6 +6,7 @@ from rest_framework import routers
 
 from login import views as login_views
 from afc import views as afc_views
+from client import urls as client_urls
 
 
 router = routers.DefaultRouter()
@@ -24,6 +25,8 @@ urlpatterns = [
     # Examples:
     # url(r'^$', 'WiseAFC.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
+
+    url(r'^', include(client_urls)),
 
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace="rest_framework")),
